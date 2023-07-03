@@ -1,1 +1,1 @@
-implemnted distributed automated judge System with Django framework
+Implemnted distributed automated judge System with Django framework
