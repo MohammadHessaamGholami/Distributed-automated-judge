@@ -1,0 +1,36 @@
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title> سیستم داوری خودکار</title>
+    <script defer type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <link
+            rel="stylesheet"
+            href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css"
+            integrity="sha384-vus3nQHTD+5mpDiZ4rkEPlnkcyTP+49BhJ4wJeJunw06ZAp+wzzeBPUXr42fi8If"
+            crossorigin="anonymous">
+
+    <script defer
+            src="https://cdn.rtlcss.com/bootstrap/v4.2.1/js/bootstrap.min.js"
+            integrity="sha384-a9xOd0rz8w0J8zqj1qJic7GPFfyMfoiuDjC9rqXlVOcGO/dmRqzMn34gZYDTel8k"
+            crossorigin="anonymous"></script>
+    {% block extra_head %}{% endblock %}
+</head>
+<body dir="rtl">
+<nav style="display: flex; justify-content: space-between"
+     class="navbar navbar-expand-lg navbar-light bg-light">
+    <div style="text-align: left;">
+        <a class="navbar-brand" href="{% url 'land_page' %}">سیستم داوری خودکار</a>
+    </div>
+    <div>
+        <a style="padding: 0 1em"  href="{% url 'accounts:teacher_signup' %}">ثبت نام استاد</a>
+        <a style="padding: 0 1em" href="{% url 'accounts:student_signup' %}">ثبت نام دانشجو</a>
+        <a style="padding: 0 1em" href="{% url 'accounts:login' %}" >ورود</a>
+    </div>
+</nav>
+{% block body %}
+    <div id="land" style="background-image: url('../static/land.jpg');
+     width: 100vw; height: 91.6vh; background-size: cover"></div>
+{% endblock %}
+</body>
+</html>

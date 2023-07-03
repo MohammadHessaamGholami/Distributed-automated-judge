@@ -1,0 +1,134 @@
+<head>
+    <style>
+        table {
+            border:  1px solid gray;
+        }
+        table, th, td {
+            
+            border-collapse: collapse;
+            text-align: center;
+
+        }
+        th {
+            background-color: gainsboro;   
+        }
+        td {
+            padding: 17px;
+
+        }
+    </style>
+</head>
+{% extends 'base.html' %}
+
+{% block body %}
+    <div style="max-width: 800px" class="container">
+        
+        <a href="{% url 'racing:racing_questions' racing_id %}"style="color: red">برگشت به صفحه سوالات</a>
+        <br><br>
+        {% for item in question %}
+        {% if question %}
+        <h4>
+            جزییات سوال "{{ item.title }}"
+        </h4>
+        
+        <div class="card">
+            <div class="card-body">
+                <div style="display: flex; justify-content: space-between">
+                    
+                    
+                    {% if item.question %}<a download href="{{item.question.url}}">فایل سوال</a>{% endif %}
+                    {% if item.sample_input %}<a download href="{{item.sample_input.url}}">فایل نمونه ورودی</a>{% endif %}
+                    {% if item.sample_output %}<a download href="{{item.sample_output.url}}">فایل نمونه خروجی</a>{% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% endfor %}
+
+        <br><br>
+
+    {% if not is_sentAnswer and not is_teacher %}
+    <form enctype="multipart/form-data" class="form" action="{% url 'racing:add_answer' racing_id question_id %}" method="post" style="margin-bottom: 1em">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_attachment">بارگذاری جواب:</label>
+            {{ answer_form.answer }}
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">ارسال جواب</button>
+    </form>
+
+    {% else %}
+        {% for item in the_answer%}
+        {% if item.answer %}<a download href="{{item.answer.url}}">
+           دانلود جواب ارسال شده
+        </a>{% endif %}
+        <br><br><br>
+        <a href="{% url 'racing:delete_answer' racing_id question_id  %}">حذف جواب ارسال شده</a>
+        {% endfor %}
+    {% endif %}
+    
+    <br><br><br><br>
+    {% if not is_teacher %}
+    <h4>ارسال من</h4>
+    <table style="width:100%">
+        <tr>
+          <th>زمان ارسال</th>
+          <th>زمان اجرا</th>
+          <th>نمره</th>
+          </tr>
+          {% for answer_information in the_answer %}
+          {% if answer_information.answer_score >= 50 %}
+          <tr style="background-color: rgb(92, 146, 92);">
+            {%else%}
+          <tr style="background-color: rgb(240, 126, 84);">
+            {%endif%}
+            <td>{{answer_information.sending_at}}</td>
+            <td>{{answer_information.running_time}}</td>
+            {% if answer_information.answer_score == -1 %}
+                <td style="background-color:darkgray;">در حال بررسی</td>
+            {% else %}
+                <td>{{answer_information.answer_score}}</td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+          </table>
+    {% endif %}
+    <br><br><br><br>
+
+    <h4>جدول امتیازات</h4>
+    
+    
+    
+
+    <table style="width:100%">
+        <tr>
+          <th>شماره دانشجویی</th>
+          <th>زمان ارسال</th>
+          <th>زمان اجرا</th>
+          <th>نمره</th>
+
+        </tr>
+        {% for answer_information in answers_of_question %}
+        {% if answer_information.answer_score >= 50 %}
+          <tr style="background-color: rgb(92, 146, 92);">
+        {%else%}
+          <tr style="background-color: rgb(240, 126, 84);">
+        {%endif%}
+            <td>{{ answer_information.student_id }}</td>
+            <td>{{answer_information.sending_at}}</td>
+            <td>{{answer_information.running_time}}</td>
+            {% if answer_information.answer_score == -1 %}
+            <td style="background-color:darkgray;">در حال بررسی</td>
+        {% else %}
+            <td>{{answer_information.answer_score}}</td>
+        {% endif %}
+        </tr>
+        
+          {% endfor %}
+      </table>
+
+    </div>
+
+{% endblock %}

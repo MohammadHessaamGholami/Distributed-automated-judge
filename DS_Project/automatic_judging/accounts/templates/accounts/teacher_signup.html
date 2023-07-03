@@ -1,0 +1,46 @@
+{% extends 'land_page.html' %} {% load static %}
+{% block extra_head %}
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <h2>ثبت نام استاد</h2>
+        <hr>
+        {{ user_form.errors }}
+        {{ user_form.non_field_errors }}
+        {{ teacher_form.errors }}
+        {{ teacher_form.non_field_errors }}
+        <form class="form" action="." method="post">{% csrf_token %}
+            <div class="form-row">
+                <div class="col">
+                    <div class="form-group">
+                        <label id="id_first_name">نام</label>
+                        {{ user_form.first_name }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label id="id_last_name">نام خانوادگی</label>
+                        {{ user_form.last_name }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="id_email">ایمیل</label>
+                {{ user_form.email }}
+            </div>
+            <div class="form-group">
+                <label id="id_teacher_id">شناسه استادی</label>
+                {{ teacher_form.teacher_id }}
+            </div>
+            <div class="form-group">
+                <label id="id_password1">رمز عبور</label>
+                {{ user_form.password1 }}
+            </div>
+            <div class="form-group">
+                <label id="id_password2">تکرار رمز عبور</label>
+                {{ user_form.password2 }}
+            </div>
+            <button type="submit" class="btn btn-primary">ثبت نام</button>
+        </form>
+    </div>
+{% endblock %}

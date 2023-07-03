@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="container">
+        <a href="{% url 'racing:racing_list' %}"style="color: red">برگشت به صفحه مسابقات</a>
+        <br><br>
+        {% for item in racing_name %}
+        <h4> سوال های مسابقه "{{item.name}}"</h4>
+        {% endfor %}
+        {% for question in questions %}
+            <br><br>
+            <div class="card">
+                <div class="card-body">
+                    <div style="display: flex; justify-content: space-between">
+                        <h5 class="card-title">
+                            مسابقه "{{ question.title }}" 
+                        </h5>
+                        {% if question.question %}<a download href="{{question.question.url}}">فایل سوال</a>{% endif %}
+                        {% if question.sample_input %}<a download href="{{question.sample_input.url}}">فایل نمونه ورودی</a>{% endif %}
+                        {% if question.sample_output %}<a download href="{{question.sample_output.url}}">فایل نمونه خروجی</a>{% endif %}
+                        {% if not is_teacher %}
+                            <form enctype="multipart/form-data" class="form" action="{% url 'racing:question_detail' racing_id question.id %}" method="post" style="margin-bottom: 1em">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary">ارسال جواب</button>
+                            </form>
+                        {% else %}
+                        <a href="{% url 'racing:question_detail' racing_id question.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary"> مشاهده جوابها  </button>
+                        </a>
+                        
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <hr/>
+
+        <br><br><br>
+        {% if is_teacher %}
+        <h4>ایجاد سوال</h4>
+        <form enctype="multipart/form-data" class="form" action="." method="post" style="margin-bottom: 1em">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_subject">عنوان</label>
+                {{ question_form.title }}
+            </div>
+            <div class="form-group">
+                <label for="id_attachment">فایل سوال</label>
+                {{ question_form.question }}
+            </div>
+            <div class="form-group">
+                <label for="id_attachment">نمونه ورودی</label>
+                {{ question_form.sample_input }}
+            </div>
+            <div class="form-group">
+                <label for="id_attachment">نمونه خروجی</label>
+                {{ question_form.sample_output }}
+            </div>
+            <p></p>
+            <button type="submit" class="btn btn-primary">ایجاد سوال</button>
+        </form>
+        {% endif %}
+
+
+
+
+
+    </div>
+{% endblock %}
